@@ -8,9 +8,9 @@ import time
 import logging
 import os
 
-SCRAPE_OUTPUT_PATH = 'data_v2.json'
+SCRAPE_OUTPUT_PATH = 'data/generated/image-with-caption.json'
 LOG_FILE_PATH = 'scraping.log'
-HEADLESS = False
+HEADLESS = True
 
 logging.basicConfig(
 	level=logging.INFO,
@@ -58,8 +58,11 @@ async def scroll_and_extract(page):
 	
 	return image_list
 
-async def main(keyword_list):
-	for keyword in keyword_list:
+async def main(keyword_list, last_scrape_index=0):
+	for keyword_index, keyword in enumerate(keyword_list):
+		if keyword_index < last_scrape_index:
+			continue
+		keyword = keyword.replace('\n', '')
 		logging.info(f'Scraping keyword: "{keyword}"')
 		alternate_type_list = []
 		async with async_playwright() as p:
@@ -91,7 +94,15 @@ async def main(keyword_list):
 				df.to_json(SCRAPE_OUTPUT_PATH, orient='records', mode='a', lines=True)
 				logging.info(f'[{keyword}] Completed!')
 		logging.info(f'Completed scraping keyword: "{keyword}"!')
+		with open('tracker.txt', "w") as output:
+			output.write(str(keyword_index))
 
 if __name__=='__main__':
-	keyword_list = ['lembu', 'kereta']
-	asyncio.run(main(keyword_list))
+	last_scrape_txt = open('tracker.txt', 'r')
+	last_scrape_index = int(last_scrape_txt.readlines()[0])
+	
+	text_file = open('data/generated/malay-words.txt', 'r')
+	lines = text_file.readlines()
+	keyword_list = list(dict.fromkeys(lines))
+
+	asyncio.run(main(keyword_list, last_scrape_index))
