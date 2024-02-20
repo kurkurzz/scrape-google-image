@@ -22,3 +22,8 @@ for ((i=0; i<$NUM_INSTANCES; i++)); do
     echo "$START_INDEX - $END_INDEX"
 	python main.py --start $START_INDEX --end $END_INDEX &
 done
+
+# Wait for all instances to finish
+wait
+
+echo "All instances have finished."
