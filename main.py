@@ -102,7 +102,7 @@ async def scrape(keyword_list, start_index, end_index, last_scrape_index):
 				df.to_json(SCRAPE_OUTPUT_PATH, orient='records', mode='a', lines=True)
 				logging.info(f'[{keyword}] Completed!')
 		logging.info(f'Completed scraping keyword: "{keyword}"!')
-		file_name = f'tracker/{start_index}-{end_index}.txt'
+		file_name = f'trackers/{start_index}-{end_index}.txt'
 		with open(file_name, "w") as output:
 			output.write(str(keyword_index))
 
@@ -117,8 +117,8 @@ def main(start: int = typer.Option('--start', help='Start keyword index (inclusi
 		typer.echo('Error: Start index cannot be greater than end index.')
 		raise typer.Exit(1)
 
-	os.makedirs('tracker', exist_ok=True)
-	file_name = f'tracker/{start}-{end}.txt'
+	os.makedirs('trackers', exist_ok=True)
+	file_name = f'trackers/{start}-{end}.txt'
 	if not os.path.exists(file_name):
 		with open(file_name, 'w') as f:
 			f.write(str(start))
