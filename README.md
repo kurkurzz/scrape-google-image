@@ -16,18 +16,10 @@ we will be scraping images with the attached alt text. the images that we are in
 
 1. `pip install -r requirements.txt`
 
-1. Set your initial keyword index in the `tracker.txt`.
+1. `playwright install`
 
-	```txt
-	100
-	```
+1. there is 77000+ keywords. to scrape on chunk of it, run `python main.py --start 0 --end 100`
+	this wil scrape the first 100 keywords. it also keep tracks on the last scraped index so in the event of the script is interrupted, it can resume from the last checkpoint. all you need to do is run the same command.
 
-	Example above will make the script to start scraping from index 100
-
-1. run `python scrape_thumbnail_only.py`
-
-### Further work
-
-specify end index
 
 
