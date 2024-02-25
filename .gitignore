@@ -1,8 +1,9 @@
 logs/*.txt
 trackers/*.txt
+*.jsonl
 *.json
 *.log
-
+*.lock
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
